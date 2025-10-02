@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="dfchatimprovements:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/dfchatimprovements_jar</output-path>
+    <root id="archive" name="dfchatimprovements.jar">
+      <element id="module-output" name="dfchatimprovements" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+    </root>
+  </artifact>
+</component>
