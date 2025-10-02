@@ -75,7 +75,7 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
                     case "nerd", "nerd_face" -> msg = msg.replace(word, "\uE921");
                     case "beginner", "japanese_symbol_for_beginner" -> msg = msg.replace(word, "\uE922");
 
-                    case null, default -> {
+                    default -> {
 
                     }
                 }
