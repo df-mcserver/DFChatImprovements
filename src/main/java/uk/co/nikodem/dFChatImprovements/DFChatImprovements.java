@@ -67,7 +67,7 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
                 // emoji
                 String emojiName = word.substring(1, word.length()-1).toLowerCase();
 
-                String glyphChar = EmojiMappings.mappings.get(emojiName);
+                String glyphChar = EmojiMappings.mappings.get(EmojiMappings.alternateWords.getOrDefault(emojiName, emojiName));
                 if (glyphChar != null) msg = msg.replace(word, glyphChar);
             }
         }
