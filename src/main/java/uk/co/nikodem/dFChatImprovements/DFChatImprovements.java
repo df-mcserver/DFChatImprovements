@@ -16,10 +16,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.MessageListener;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
 
+import javax.print.DocFlavor;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions.CUSTOM_PROXY_CHANNEL;
 
 public final class DFChatImprovements extends JavaPlugin implements Listener {
 
+    public static Pattern emojiColonPattern = Pattern.compile(":[^:]+:");
+    public static Pattern charPattern = Pattern.compile("\\X");
     public static MessageListener messageListener;
 
     @Override
@@ -71,12 +77,16 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
                 }
 
                 // emoji
-            } else if (word.startsWith(":") && word.endsWith(":")) {
+            } else if (word.contains(":")) {
                 // emoji
-                String emojiName = word.substring(1, word.length()-1).toLowerCase();
 
-                String glyphChar = EmojiMappings.mappings.get(EmojiMappings.alternateWords.getOrDefault(emojiName, emojiName));
-                if (glyphChar != null) msg = msg.replace(word, glyphChar);
+                Matcher m = emojiColonPattern.matcher(word);
+                String replacement = m.replaceAll((result) -> {
+                    String emojiWord = result.group();
+                    return EmojiMappings.mappings.get(EmojiMappings.alternateWords.getOrDefault(emojiWord, emojiWord));
+                });
+
+                msg = msg.replace(word, replacement);
             }
         }
 
@@ -90,13 +100,13 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
         if (ProxyAbstractions.hasAccess) {
             String discordReadyMessage = PlainTextComponentSerializer.plainText().serialize(mm.deserialize(msg));
 
-            for (String word : discordReadyMessage.split("\\s+")) {
-                if (EmojiMappings.invertedMappings.containsKey(word)) {
-                    discordReadyMessage = discordReadyMessage.replace(word, ":"+EmojiMappings.invertedMappings.get(word)+":");
-                }
-            }
+            Matcher m = charPattern.matcher(discordReadyMessage);
+            String replacement = m.replaceAll((result) -> {
+                String emojiWord = result.group();
+                return EmojiMappings.invertedMappings.getOrDefault(emojiWord, emojiWord);
+            });
 
-            ProxyAbstractions.sendPlayerMessage(e.getPlayer(), discordReadyMessage);
+            ProxyAbstractions.sendPlayerMessage(e.getPlayer(), replacement);
         }
     }
 }
