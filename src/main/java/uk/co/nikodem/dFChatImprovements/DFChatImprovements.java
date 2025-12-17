@@ -15,6 +15,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
 
+import java.util.Map;
+
 public final class DFChatImprovements extends JavaPlugin implements Listener {
 
     @Override
@@ -78,5 +80,17 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
         msg = msg.replace("\\/", "/");
 
         e.message(mm.deserialize(msg));
+
+        if (ProxyAbstractions.hasAccess) {
+            String discordReadyMessage = PlainTextComponentSerializer.plainText().serialize(mm.deserialize(msg));
+
+            for (String word : discordReadyMessage.split("\\s+")) {
+                if (EmojiMappings.invertedMappings.containsKey(word)) {
+                    discordReadyMessage = discordReadyMessage.replace(word, ":"+EmojiMappings.invertedMappings.get(word)+":");
+                }
+            }
+
+            ProxyAbstractions.sendPlayerMessage(e.getPlayer(), discordReadyMessage);
+        }
     }
 }

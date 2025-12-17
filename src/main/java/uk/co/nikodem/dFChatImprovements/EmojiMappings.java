@@ -1,5 +1,7 @@
 package uk.co.nikodem.dFChatImprovements;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class EmojiMappings {
@@ -62,4 +64,17 @@ public class EmojiMappings {
             Map.entry("nerd", "\uE921"),
             Map.entry("beginner", "\uE922")
     );
+
+    public static final Map<String, String> invertedMappings;
+    static {
+        Map<String, String> newMappings = new HashMap<>();
+        for (Map.Entry<String, String> entry : mappings.entrySet()) {
+            String word = entry.getKey();
+            String emoji = entry.getValue();
+
+            newMappings.put(emoji, word);
+        }
+
+        invertedMappings = Collections.unmodifiableMap(newMappings);
+    }
 }
