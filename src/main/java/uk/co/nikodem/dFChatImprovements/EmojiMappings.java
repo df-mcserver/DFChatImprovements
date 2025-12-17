@@ -65,6 +65,11 @@ public class EmojiMappings {
             Map.entry(":beginner:", "\uE922")
     );
 
+    public static Map<String, String> customDiscordEmojiMappings = Map.<String, String>ofEntries(
+            Map.entry(":joobi:", "<:joobi:1323391120134377503>"),
+            Map.entry(":cold_sunglasses:", "<:cold_sunglasses:1320410427863334965>")
+    );
+
     public static final Map<String, String> invertedMappings;
     static {
         Map<String, String> newMappings = new HashMap<>();

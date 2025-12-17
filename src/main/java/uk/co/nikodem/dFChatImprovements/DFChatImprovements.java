@@ -107,7 +107,8 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
             Matcher m = charPattern.matcher(discordReadyMessage);
             String replacement = m.replaceAll((result) -> {
                 String emojiWord = result.group();
-                return EmojiMappings.invertedMappings.getOrDefault(emojiWord, emojiWord);
+                String finalEmoji = EmojiMappings.invertedMappings.getOrDefault(emojiWord, emojiWord);
+                return EmojiMappings.customDiscordEmojiMappings.getOrDefault(finalEmoji, finalEmoji);
             });
 
             ProxyAbstractions.sendPlayerMessage(e.getPlayer(), replacement);
