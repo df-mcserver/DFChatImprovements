@@ -20,6 +20,12 @@ public class ProxyAbstractions {
 
     public static void sendPlayerMessage(Player plr, String message) {
         if (!hasAccess) return;
+        DFChatImprovements plugin = DFChatImprovements.getPlugin(DFChatImprovements.class);
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("DiscordLogStandardMessage");
+        out.writeUTF(message);
+        System.out.println("Sending "+message);
+        plr.sendPluginMessage(plugin, CUSTOM_PROXY_CHANNEL, out.toByteArray());
     }
 
     public static void requestBridgeAccess(Player plr) {
