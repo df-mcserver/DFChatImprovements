@@ -12,10 +12,21 @@ public class ProxyAbstractions {
 
     public static void sendDeathMessage(Player plr, String deathMessage) {
         if (!hasAccess) return;
+        DFChatImprovements plugin = DFChatImprovements.getPlugin(DFChatImprovements.class);
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("DiscordLogStandardMessage");
+        out.writeUTF(deathMessage);
+        plr.sendPluginMessage(plugin, CUSTOM_PROXY_CHANNEL, out.toByteArray());
     }
 
     public static void sendAdvancementMessage(Player plr, String advancementMessage) {
         if (!hasAccess) return;
+        DFChatImprovements plugin = DFChatImprovements.getPlugin(DFChatImprovements.class);
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("DiscordLogEmbedMessage");
+        out.writeUTF("00ff00");
+        out.writeUTF(advancementMessage);
+        plr.sendPluginMessage(plugin, CUSTOM_PROXY_CHANNEL, out.toByteArray());
     }
 
     public static void sendPlayerMessage(Player plr, String message) {
@@ -24,7 +35,6 @@ public class ProxyAbstractions {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("DiscordLogStandardMessage");
         out.writeUTF(message);
-        System.out.println("Sending "+message);
         plr.sendPluginMessage(plugin, CUSTOM_PROXY_CHANNEL, out.toByteArray());
     }
 

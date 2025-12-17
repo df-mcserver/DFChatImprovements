@@ -15,8 +15,8 @@ import org.bukkit.event.player.PlayerChannelEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.MessageListener;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
+import uk.co.nikodem.dFChatImprovements.UAAPi.CustomAdvancementListener;
 
-import javax.print.DocFlavor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +36,10 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
 
         messageListener = new MessageListener();
         messageListener.initialiseMessageHandlers();
+
+        if (Bukkit.getPluginManager().isPluginEnabled("UltimateAdvancementAPI")) {
+            Bukkit.getPluginManager().registerEvents(new CustomAdvancementListener(), this);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
