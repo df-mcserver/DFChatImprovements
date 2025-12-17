@@ -6,4 +6,4 @@ An incredibly small and simple SpigotMC (1.21+) plugin which adds minor chat imp
    - Syntax: `hello :smile:` -> `hello 😄`
 - Pinging
    - Plays a sound in the mentioned player's game
-   - Syntax: `hello @[player-username]`
+   - Syntax: `hello @[player-username]` -> plays a sound in `player-username`'s client
