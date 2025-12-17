@@ -23,13 +23,12 @@ public class ProxyAbstractions {
     }
 
     public static void requestBridgeAccess(Player plr) {
-        if (hasAccess) return;
-        if (hasRequested) return;
-        hasRequested = true;
+        if (hasAccess || hasRequested) return;
         DFChatImprovements plugin = DFChatImprovements.getPlugin(DFChatImprovements.class);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("DiscordLoggingBridged");
         plr.sendPluginMessage(plugin, CUSTOM_PROXY_CHANNEL, out.toByteArray());
+        hasRequested = true;
     }
 
     public static void setupChannels() {

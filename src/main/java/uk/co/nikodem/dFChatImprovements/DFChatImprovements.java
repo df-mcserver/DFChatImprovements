@@ -16,6 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.MessageListener;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
 
+import static uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions.CUSTOM_PROXY_CHANNEL;
+
 public final class DFChatImprovements extends JavaPlugin implements Listener {
 
     public static MessageListener messageListener;
@@ -33,7 +35,7 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void OnPlayerJoin(PlayerChannelEvent e) {
         // messages can only be sent once a player is present
-        ProxyAbstractions.requestBridgeAccess(e.getPlayer());
+        if (e.getChannel().equals(CUSTOM_PROXY_CHANNEL)) ProxyAbstractions.requestBridgeAccess(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
