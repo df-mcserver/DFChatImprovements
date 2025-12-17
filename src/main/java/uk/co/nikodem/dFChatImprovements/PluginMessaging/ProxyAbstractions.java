@@ -8,6 +8,7 @@ import uk.co.nikodem.dFChatImprovements.DFChatImprovements;
 public class ProxyAbstractions {
     public static final String CUSTOM_PROXY_CHANNEL = "df:proxy";
     public static boolean hasAccess = false;
+    public static boolean hasRequested = false;
 
     public static void sendDeathMessage(Player plr, String deathMessage) {
         if (!hasAccess) return;
@@ -23,6 +24,8 @@ public class ProxyAbstractions {
 
     public static void requestBridgeAccess(Player plr) {
         if (hasAccess) return;
+        if (hasRequested) return;
+        hasRequested = true;
         DFChatImprovements plugin = DFChatImprovements.getPlugin(DFChatImprovements.class);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("DiscordLoggingBridged");
