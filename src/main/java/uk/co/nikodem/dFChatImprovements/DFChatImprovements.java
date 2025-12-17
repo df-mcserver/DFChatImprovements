@@ -1,15 +1,17 @@
 package uk.co.nikodem.dFChatImprovements;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
 
@@ -18,29 +20,45 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(this, this);
+
+        ProxyAbstractions.setupChannels();
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void OnPlayerJoin(PlayerJoinEvent e) {
+        // messages can only be sent once a player is present
+        ProxyAbstractions.requestBridgeAccess(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void OnDeath(PlayerDeathEvent e) {
+        if (e.deathMessage() == null) return;
         Player plr = e.getEntity();
-        ProxyAbstractions.sendDeathMessage(plr, e.getDeathMessage());
+        ProxyAbstractions.sendDeathMessage(plr, PlainTextComponentSerializer.plainText().serialize(e.deathMessage()));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void OnChat(AsyncPlayerChatEvent e) {
+    public void OnAdvancementMessage(PlayerAdvancementDoneEvent e) {
+        if (e.message() == null) return;
+        ProxyAbstractions.sendAdvancementMessage(e.getPlayer(), PlainTextComponentSerializer.plainText().serialize(e.message()));
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void OnChat(AsyncChatEvent e) {
         // chat modifications
 
         if (e.isCancelled()) return;
 
-        String msg = e.getMessage();
+        MiniMessage mm = MiniMessage.miniMessage();
+        String msg = mm.serialize(e.message());
         for (String word : msg.split("\\s+")){
             // pinging
             if (word.startsWith("@")) {
                 String name = word.substring(1);
                 for (Player mentioned : Bukkit.getOnlinePlayers()) {
-                    if (mentioned.getDisplayName().equals(name)) {
+                    if (mentioned.getName().equals(name)) {
                         mentioned.playSound(mentioned.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
-                        msg = msg.replace(word, ChatColor.translateAlternateColorCodes('&', "&3"+word+"&r"));
+                        msg = msg.replace(word, "<aqua>"+word+"</aqua>");
                     }
                 }
 
@@ -59,6 +77,6 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
         // make \/ replace with / so you can type out commands without running them
         msg = msg.replace("\\/", "/");
 
-        e.setMessage(msg);
+        e.message(mm.deserialize(msg));
     }
 }
