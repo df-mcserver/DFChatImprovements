@@ -11,23 +11,27 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerChannelEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import uk.co.nikodem.dFChatImprovements.PluginMessaging.MessageListener;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
 
-import java.util.Map;
-
 public final class DFChatImprovements extends JavaPlugin implements Listener {
+
+    public static MessageListener messageListener;
 
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(this, this);
 
         ProxyAbstractions.setupChannels();
+
+        messageListener = new MessageListener();
+        messageListener.initialiseMessageHandlers();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void OnPlayerJoin(PlayerJoinEvent e) {
+    public void OnPlayerJoin(PlayerChannelEvent e) {
         // messages can only be sent once a player is present
         ProxyAbstractions.requestBridgeAccess(e.getPlayer());
     }
