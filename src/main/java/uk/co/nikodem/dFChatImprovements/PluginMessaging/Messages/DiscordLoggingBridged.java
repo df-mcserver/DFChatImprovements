@@ -15,8 +15,12 @@ public class DiscordLoggingBridged implements DFPluginMessageHandler {
         if (val.equals("true")) ProxyAbstractions.hasAccess = true;
         else if (val.equals("false")) ProxyAbstractions.hasAccess = false;
 
-        for (byte[] data : ProxyAbstractions.queue) {
-            ProxyAbstractions.sendRequest(player, data);
+        if (ProxyAbstractions.hasAccess) {
+            for (byte[] data : ProxyAbstractions.queue) {
+                ProxyAbstractions.sendRequest(player, data);
+            }
+
+            ProxyAbstractions.queue = null;
         }
     }
 }

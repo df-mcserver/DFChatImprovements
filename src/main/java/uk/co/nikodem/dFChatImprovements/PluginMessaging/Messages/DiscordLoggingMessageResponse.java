@@ -9,7 +9,7 @@ import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
 public class DiscordLoggingMessageResponse implements DFPluginMessageHandler {
     @Override
     public void run(@NotNull String channel, @NotNull Player player, ByteArrayDataInput in, byte @NotNull [] message) {
-        if (ProxyAbstractions.hasAccess) return;
+        ProxyAbstractions.hasAccess = false;
         ProxyAbstractions.queue.add(message);
 
         ProxyAbstractions.hasRequested = false;
