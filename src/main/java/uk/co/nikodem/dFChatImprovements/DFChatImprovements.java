@@ -58,7 +58,8 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void OnAdvancementMessage(PlayerAdvancementDoneEvent e) {
         if (e.message() == null) return;
-        ProxyAbstractions.sendAdvancementMessage(e.getPlayer(), PlainTextComponentSerializer.plainText().serialize(e.message()));
+        Player plr = e.getPlayer();
+        ProxyAbstractions.sendAdvancementMessage(plr, PlainTextComponentSerializer.plainText().serialize(e.message()));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

@@ -30,8 +30,8 @@ public class CustomAdvancementListener implements Listener {
             StringBuilder msg = new StringBuilder();
             BaseComponent[] components = event.getAdvancement().getAnnounceMessage(plr);
             for (BaseComponent component : components) {
-                // get announcement msg in plain text, remove the random §a
-                msg.append(component.toPlainText().replaceAll("§a", ""));
+                // get announcement msg in plain text, remove the colour formatting
+                msg.append(component.toPlainText().replaceAll("§.", ""));
             }
 
             ProxyAbstractions.sendAdvancementMessage(plr, msg.toString());

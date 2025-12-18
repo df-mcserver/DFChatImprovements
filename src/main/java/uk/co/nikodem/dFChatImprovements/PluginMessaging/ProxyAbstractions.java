@@ -28,7 +28,8 @@ public class ProxyAbstractions {
         out.writeUTF("DiscordLogEmbedMessage");
         out.writeUTF("00ff00");
         out.writeUTF(advancementMessage);
-        sendRequest(plr, out.toByteArray());    }
+        sendRequest(plr, out.toByteArray());
+    }
 
     public static void sendPlayerMessage(Player plr, String message) {
         if (!hasAccess) return;
