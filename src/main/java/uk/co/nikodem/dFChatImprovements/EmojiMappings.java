@@ -27,7 +27,7 @@ public class EmojiMappings {
             Map.entry(":japanese_symbol_for_beginner:", ":beginner:")
     );
 
-    public static Map<String, String> mappings = Map.<String, String>ofEntries(
+    public static Map<String, String> mappings = Map.ofEntries(
             Map.entry(":skull:", "\uE900"),
             Map.entry(":cold_sunglasses:", "\uE901"),
             Map.entry(":sob:", "\uE902"),
@@ -43,7 +43,7 @@ public class EmojiMappings {
             Map.entry(":fire:", "\uE90C"),
             Map.entry(":fish:", "\uE90D"),
             Map.entry(":moai:", "\uE90E"),
-            Map.entry(":thumbs_up:", "\uE90F"),
+            Map.entry(":thumbs:", "\uE90F"),
             Map.entry(":salute:", "\uE910"),
             Map.entry(":shrug:", "\uE911"),
             Map.entry(":wompwomp:", "\uE912"),
@@ -65,9 +65,13 @@ public class EmojiMappings {
             Map.entry(":beginner:", "\uE922")
     );
 
-    public static Map<String, String> customDiscordEmojiMappings = Map.<String, String>ofEntries(
+    public static Map<String, String> customDiscordEmojiMappings = Map.ofEntries(
             Map.entry(":joobi:", "<:joobi:1323391120134377503>"),
-            Map.entry(":cold_sunglasses:", "<:cold_sunglasses:1320410427863334965>")
+            Map.entry(":cold_sunglasses:", "<:cold_sunglasses:1320410427863334965>"),
+            Map.entry(":wompwomp:", "<:wompwomp:1320855389251834046>"),
+            Map.entry(":thumbs:", "<:thumbs:1320855387884355707>"),
+            Map.entry(":shrug:", "<:shrug:1320855386710081546>"),
+            Map.entry(":salute:", "<:salute:1320855385476960266>")
     );
 
     public static final Map<String, String> invertedMappings;
