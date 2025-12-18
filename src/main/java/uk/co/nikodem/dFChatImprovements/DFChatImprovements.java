@@ -1,5 +1,6 @@
 package uk.co.nikodem.dFChatImprovements;
 
+import io.papermc.paper.advancement.AdvancementDisplay;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -59,7 +60,10 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
     public void OnAdvancementMessage(PlayerAdvancementDoneEvent e) {
         if (e.message() == null) return;
         Player plr = e.getPlayer();
-        ProxyAbstractions.sendAdvancementMessage(plr, PlainTextComponentSerializer.plainText().serialize(e.message()));
+        AdvancementDisplay display = e.getAdvancement().getDisplay();
+        String description = display == null ? "" : "\n"+PlainTextComponentSerializer.plainText().serialize(display.description());
+        boolean isChallenge = display != null && display.frame() == AdvancementDisplay.Frame.CHALLENGE;
+        ProxyAbstractions.sendAdvancementMessage(plr, isChallenge, PlainTextComponentSerializer.plainText().serialize(e.message())+description);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

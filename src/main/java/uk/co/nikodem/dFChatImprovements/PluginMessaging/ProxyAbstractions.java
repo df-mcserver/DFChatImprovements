@@ -22,11 +22,11 @@ public class ProxyAbstractions {
         out.writeUTF(deathMessage);
         sendRequest(plr, out.toByteArray());    }
 
-    public static void sendAdvancementMessage(Player plr, String advancementMessage) {
+    public static void sendAdvancementMessage(Player plr, boolean isChallenge, String advancementMessage) {
         if (!hasAccess) return;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("DiscordLogEmbedMessage");
-        out.writeUTF("00ff00");
+        out.writeUTF(isChallenge ? "800080" : "00ff00");
         out.writeUTF(advancementMessage);
         sendRequest(plr, out.toByteArray());
     }

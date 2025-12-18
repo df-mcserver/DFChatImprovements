@@ -1,6 +1,8 @@
 package uk.co.nikodem.dFChatImprovements.UAAPi;
 
 import com.fren_gor.ultimateAdvancementAPI.advancement.RootAdvancement;
+import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementDisplay;
+import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementFrameType;
 import com.fren_gor.ultimateAdvancementAPI.events.advancement.AdvancementProgressionUpdateEvent;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
@@ -34,7 +36,15 @@ public class CustomAdvancementListener implements Listener {
                 msg.append(component.toPlainText().replaceAll("§.", ""));
             }
 
-            ProxyAbstractions.sendAdvancementMessage(plr, msg.toString());
+            AdvancementDisplay display = event.getAdvancement().getDisplay();
+            StringBuilder description = new StringBuilder();
+
+            for (String desc : display.getDescription()) {
+                description.append("\n");
+                description.append(desc);
+            }
+
+            ProxyAbstractions.sendAdvancementMessage(plr, display.getFrame() == AdvancementFrameType.CHALLENGE, msg+(description.toString()));
         }
     }
 }
