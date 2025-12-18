@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public interface DFPluginMessageHandler {
-    void run(@NotNull String channel, @NotNull Player player, ByteArrayDataInput in);
+    void run(@NotNull String channel, @NotNull Player player, ByteArrayDataInput in, byte @NotNull [] message);
 
     default byte[] createMessage(String... messages) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();

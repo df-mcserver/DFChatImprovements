@@ -7,6 +7,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 import uk.co.nikodem.dFChatImprovements.DFChatImprovements;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.Messages.DiscordLoggingBridged;
+import uk.co.nikodem.dFChatImprovements.PluginMessaging.Messages.DiscordLoggingMessageResponse;
 import uk.co.nikodem.dFChatImprovements.Utils.StringHelper;
 
 import java.util.HashMap;
@@ -18,6 +19,10 @@ public class MessageListener implements PluginMessageListener {
 
     public void initialiseMessageHandlers() {
         messageHandlers.put("DiscordLoggingBridged", new DiscordLoggingBridged());
+
+        DiscordLoggingMessageResponse response = new DiscordLoggingMessageResponse();
+        messageHandlers.put("DiscordLogStandardMessage", response);
+        messageHandlers.put("DiscordLogEmbedMessage", response);
 
         DFChatImprovements plugin = DFChatImprovements.getPlugin(DFChatImprovements.class);
         plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, CUSTOM_PROXY_CHANNEL, this);
@@ -31,6 +36,6 @@ public class MessageListener implements PluginMessageListener {
         String command = StringHelper.SanitiseString(in.readUTF().split(" ")[0]);
 
         DFPluginMessageHandler handler = messageHandlers.get(command);
-        if (handler != null) handler.run(channel, player, in);
+        if (handler != null) handler.run(channel, player, in, message);
     }
 }

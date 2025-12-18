@@ -5,18 +5,14 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.DFPluginMessageHandler;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
-import uk.co.nikodem.dFChatImprovements.Utils.StringHelper;
 
-public class DiscordLoggingBridged implements DFPluginMessageHandler {
+public class DiscordLoggingMessageResponse implements DFPluginMessageHandler {
     @Override
     public void run(@NotNull String channel, @NotNull Player player, ByteArrayDataInput in, byte @NotNull [] message) {
-        String val = StringHelper.SanitiseString(in.readUTF().toLowerCase().split(" ")[0]);
+        if (ProxyAbstractions.hasAccess) return;
+        ProxyAbstractions.queue.add(message);
 
-        if (val.equals("true")) ProxyAbstractions.hasAccess = true;
-        else if (val.equals("false")) ProxyAbstractions.hasAccess = false;
-
-        for (byte[] data : ProxyAbstractions.queue) {
-            ProxyAbstractions.sendRequest(player, data);
-        }
+        ProxyAbstractions.hasRequested = false;
+        ProxyAbstractions.requestBridgeAccess(player);
     }
 }
