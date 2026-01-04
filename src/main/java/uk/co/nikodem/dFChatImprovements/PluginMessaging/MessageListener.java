@@ -23,6 +23,7 @@ public class MessageListener implements PluginMessageListener {
         DiscordLoggingMessageResponse response = new DiscordLoggingMessageResponse();
         messageHandlers.put("DiscordLogStandardMessage", response);
         messageHandlers.put("DiscordLogEmbedMessage", response);
+        messageHandlers.put("DiscordLogPlayerEmbedMessage", response);
 
         DFChatImprovements plugin = DFChatImprovements.getPlugin(DFChatImprovements.class);
         plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, CUSTOM_PROXY_CHANNEL, this);

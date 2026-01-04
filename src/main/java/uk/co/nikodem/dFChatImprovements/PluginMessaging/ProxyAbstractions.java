@@ -31,6 +31,15 @@ public class ProxyAbstractions {
         sendRequest(plr, out.toByteArray());
     }
 
+    public static void sendFlexMessage(Player plr, String hexColour, String msg) {
+        if (!hasAccess) return;
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("DiscordLogPlayerEmbedMessage");
+        out.writeUTF(hexColour);
+        out.writeUTF(msg);
+        sendRequest(plr, out.toByteArray());
+    }
+
     public static void sendPlayerMessage(Player plr, String message) {
         if (!hasAccess) return;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
