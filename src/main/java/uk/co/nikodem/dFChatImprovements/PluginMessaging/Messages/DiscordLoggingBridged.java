@@ -7,6 +7,8 @@ import uk.co.nikodem.dFChatImprovements.PluginMessaging.DFPluginMessageHandler;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
 import uk.co.nikodem.dFChatImprovements.Utils.StringHelper;
 
+import java.util.ArrayList;
+
 public class DiscordLoggingBridged implements DFPluginMessageHandler {
     @Override
     public void run(@NotNull String channel, @NotNull Player player, ByteArrayDataInput in, byte @NotNull [] message) {
@@ -20,7 +22,7 @@ public class DiscordLoggingBridged implements DFPluginMessageHandler {
                 ProxyAbstractions.sendRequest(player, data);
             }
 
-            ProxyAbstractions.queue = null;
+            ProxyAbstractions.queue = new ArrayList<>();
         }
     }
 }
