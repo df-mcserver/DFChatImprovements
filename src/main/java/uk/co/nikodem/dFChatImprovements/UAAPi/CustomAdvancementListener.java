@@ -8,6 +8,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
 
@@ -17,7 +18,7 @@ public class CustomAdvancementListener implements Listener {
 
     // very hacky way of detecting UAAPI advancements (they don't work with vanilla advancements)
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onAdvancementProgression(AdvancementProgressionUpdateEvent event) {
         if (event.getOldProgression() == event.getNewProgression()) return;
         if (event.getAdvancement() instanceof RootAdvancement) return;

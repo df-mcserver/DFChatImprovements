@@ -53,14 +53,14 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
         if (e.getChannel().equals(CUSTOM_PROXY_CHANNEL)) ProxyAbstractions.requestBridgeAccess(e.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void OnDeath(PlayerDeathEvent e) {
         if (e.deathMessage() == null) return;
         Player plr = e.getEntity();
         ProxyAbstractions.sendDeathMessage(plr, PlainTextComponentSerializer.plainText().serialize(e.deathMessage()));
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void OnAdvancementMessage(PlayerAdvancementDoneEvent e) {
         if (e.message() == null) return;
         Player plr = e.getPlayer();
@@ -70,7 +70,7 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
         ProxyAbstractions.sendAdvancementMessage(plr, isChallenge, PlainTextComponentSerializer.plainText().serialize(e.message())+description);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void OnChat(AsyncChatEvent e) {
         // chat modifications
 
