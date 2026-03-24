@@ -31,18 +31,15 @@ public class CustomAdvancementListener implements Listener {
             if (plr == null) return;
 
             StringBuilder msg = new StringBuilder();
-            BaseComponent[] components = event.getAdvancement().getAnnounceMessage(plr);
-            for (BaseComponent component : components) {
-                // get announcement msg in plain text, remove the colour formatting
-                msg.append(component.toPlainText().replaceAll("§.", ""));
-            }
+            BaseComponent component = event.getAdvancement().getAnnouncementMessage(plr).apply(plr);
+            msg.append(component.toPlainText().replaceAll("§.", ""));
 
-            AdvancementDisplay display = event.getAdvancement().getDisplay();
+            AdvancementDisplay display = (AdvancementDisplay) event.getAdvancement().getDisplay();
             StringBuilder description = new StringBuilder();
 
-            for (String desc : display.getDescription()) {
+            for (BaseComponent desc : display.getDescription()) {
                 description.append("\n");
-                description.append(desc);
+                description.append(desc.toPlainText().replaceAll("§.", ""));
             }
 
             ProxyAbstractions.sendAdvancementMessage(plr, display.getFrame() == AdvancementFrameType.CHALLENGE, msg+(description.toString()));
