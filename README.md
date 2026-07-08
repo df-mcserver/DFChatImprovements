@@ -1,5 +1,5 @@
 # DFChatImprovements
-A small PaperMC (1.20+) plugin which adds minor chat improvements, and allows for message forwarding to [DFProxyPlugin](https://github.com/df-mcserver/DFProxyPlugin).  
+A small PaperMC (1.21.11+) plugin which adds minor chat improvements, and allows for message forwarding to [DFProxyPlugin](https://github.com/df-mcserver/DFProxyPlugin).  
 This means that the messages being sent on the backend server is more accurately forwarded to the proxy, and thus to the discord bot functionality. This plugin is required for forwarding death/advancement messages.
 
 Adheres to the [v0.0.2-INDEV](https://github.com/df-mcserver/DFProxyPlugin/blob/92a3598c6090757cfba7aaed662f5478b248a2c5/PLUGIN_SPEC.md) spec of [DFProxyPlugin](https://github.com/df-mcserver/DFProxyPlugin)
@@ -13,3 +13,6 @@ Adheres to the [v0.0.2-INDEV](https://github.com/df-mcserver/DFProxyPlugin/blob/
 - Flex
    - /flex command
    - Shows your currently held item in chat, for others to see.
+- Timestamps
+  - Each message has a time of when they were sent to the server 
+  - This uses the local time of the server

@@ -1,10 +1,15 @@
 package uk.co.nikodem.dFChatImprovements;
 
 import io.papermc.paper.advancement.AdvancementDisplay;
+import io.papermc.paper.datacomponent.DataComponentType;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,12 +18,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerChannelEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.nikodem.dFChatImprovements.Commands.FlexCommand;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.MessageListener;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.ProxyAbstractions;
 import uk.co.nikodem.dFChatImprovements.UAAPi.CustomAdvancementListener;
 
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,17 +57,42 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
         }
     }
 
+    public Component getTimeHoverMessage() {
+        LocalTime currentTime = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
+        return Component.text(currentTime.toString());
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void OnPlayerJoin(PlayerChannelEvent e) {
+    public void OnPlayerEstablishChannels(PlayerChannelEvent e) {
         // messages can only be sent once a player is present
         if (e.getChannel().equals(CUSTOM_PROXY_CHANNEL)) ProxyAbstractions.requestBridgeAccess(e.getPlayer());
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void OnPlayerJoin(PlayerJoinEvent e) {
+        Component joinMessage = e.joinMessage();
+        if (joinMessage == null) return;
+
+        e.joinMessage(joinMessage.hoverEvent(HoverEvent.showText(this::getTimeHoverMessage)));
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void OnPlayerLeave(PlayerQuitEvent e) {
+        Component quitMessage = e.quitMessage();
+        if (quitMessage == null) return;
+
+        e.quitMessage(quitMessage.hoverEvent(HoverEvent.showText(this::getTimeHoverMessage)));
+    }
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void OnDeath(PlayerDeathEvent e) {
-        if (e.deathMessage() == null) return;
+        Component deathMessage = e.deathMessage();
+        if (deathMessage == null) return;
+
+        e.deathMessage(deathMessage.hoverEvent(HoverEvent.showText(this::getTimeHoverMessage)));
+
         Player plr = e.getEntity();
-        ProxyAbstractions.sendDeathMessage(plr, PlainTextComponentSerializer.plainText().serialize(e.deathMessage()));
+        ProxyAbstractions.sendDeathMessage(plr, PlainTextComponentSerializer.plainText().serialize(deathMessage));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -73,6 +108,7 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void OnChat(AsyncChatEvent e) {
         // chat modifications
+        // TODO: fix reliability
 
         if (e.isCancelled()) return;
 
@@ -108,7 +144,7 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
         // make \/ replace with / so you can type out commands without running them
         msg = msg.replace("\\/", "/");
 
-        e.message(mm.deserialize(msg));
+        e.message(mm.deserialize(msg).hoverEvent(HoverEvent.showText(this::getTimeHoverMessage)));
 
         if (ProxyAbstractions.hasAccess) {
             String discordReadyMessage = PlainTextComponentSerializer.plainText().serialize(mm.deserialize(msg));
