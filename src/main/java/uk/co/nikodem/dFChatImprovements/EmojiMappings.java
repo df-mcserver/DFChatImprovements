@@ -22,7 +22,7 @@ public class EmojiMappings {
             entry(":slightly_smiling_face:", ":slight_smile:"),
             entry(":vomiting:", ":face_vomiting:"),
             entry(":pleading:", ":pleading_face:"),
-            entry(":angry_face:", ":angry:"),
+            entry(":angry:", ":angry_face:"),
             entry(":rage_face:", ":rage:"),
             entry(":pouting_face:", ":rage:"),
             entry(":nerd_face:", ":nerd:"),

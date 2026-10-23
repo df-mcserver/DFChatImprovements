@@ -126,12 +126,16 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
                 // emoji
 
                 Matcher m = emojiColonPattern.matcher(word.toLowerCase());
-                String replacement = m.replaceAll((result) -> {
-                    String emojiWord = result.group();
-                    return EmojiMappings.mappings.get(EmojiMappings.alternateWords.getOrDefault(emojiWord, emojiWord));
-                });
+                try {
+                    String replacement = m.replaceAll((result) -> {
+                        String emojiWord = result.group();
+                        String translated = EmojiMappings.alternateWords.getOrDefault(emojiWord, emojiWord);
+                        if (translated == null) return emojiWord;
+                        return EmojiMappings.mappings.get(translated);
+                    });
 
-                if (replacement != null) msg = msg.replace(word, replacement);
+                    if (replacement != null) msg = msg.replace(word, replacement);
+                } catch (NullPointerException ignored) {}
             }
         }
 
@@ -146,13 +150,16 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
             String discordReadyMessage = PlainTextComponentSerializer.plainText().serialize(mm.deserialize(msg));
 
             Matcher m = charPattern.matcher(discordReadyMessage);
-            String replacement = m.replaceAll((result) -> {
-                String emojiWord = result.group();
-                String finalEmoji = EmojiMappings.invertedMappings.getOrDefault(emojiWord, emojiWord);
-                return EmojiMappings.customDiscordEmojiMappings.getOrDefault(finalEmoji, finalEmoji);
-            });
+            try {
+                String replacement = m.replaceAll((result) -> {
+                    String emojiWord = result.group();
+                    String finalEmoji = EmojiMappings.invertedMappings.getOrDefault(emojiWord, emojiWord);
+                    if (finalEmoji == null) return emojiWord;
+                    return EmojiMappings.customDiscordEmojiMappings.getOrDefault(finalEmoji, finalEmoji);
+                });
 
-            if (replacement != null) ProxyAbstractions.sendPlayerMessage(e.getPlayer(), replacement);
+                if (replacement != null) ProxyAbstractions.sendPlayerMessage(e.getPlayer(), replacement);
+            } catch (NullPointerException | IllegalArgumentException ignored) {}
         }
     }
 }
