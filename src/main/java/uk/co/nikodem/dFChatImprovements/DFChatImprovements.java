@@ -1,15 +1,12 @@
 package uk.co.nikodem.dFChatImprovements;
 
 import io.papermc.paper.advancement.AdvancementDisplay;
-import io.papermc.paper.datacomponent.DataComponentType;
-import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +17,6 @@ import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerChannelEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.nikodem.dFChatImprovements.Commands.FlexCommand;
 import uk.co.nikodem.dFChatImprovements.PluginMessaging.MessageListener;
@@ -129,13 +125,13 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
             } else if (word.contains(":")) {
                 // emoji
 
-                Matcher m = emojiColonPattern.matcher(word);
+                Matcher m = emojiColonPattern.matcher(word.toLowerCase());
                 String replacement = m.replaceAll((result) -> {
                     String emojiWord = result.group();
                     return EmojiMappings.mappings.get(EmojiMappings.alternateWords.getOrDefault(emojiWord, emojiWord));
                 });
 
-                msg = msg.replace(word, replacement);
+                if (replacement != null) msg = msg.replace(word, replacement);
             }
         }
 
@@ -156,7 +152,7 @@ public final class DFChatImprovements extends JavaPlugin implements Listener {
                 return EmojiMappings.customDiscordEmojiMappings.getOrDefault(finalEmoji, finalEmoji);
             });
 
-            ProxyAbstractions.sendPlayerMessage(e.getPlayer(), replacement);
+            if (replacement != null) ProxyAbstractions.sendPlayerMessage(e.getPlayer(), replacement);
         }
     }
 }
